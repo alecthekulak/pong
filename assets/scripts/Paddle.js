@@ -7,7 +7,7 @@ class Paddle {
     static height = 28 * appScale; 
     static maxSpeed = 7 * appScale / fpsMult; //4 * appScale / fpsMult;
     static paddleOffset = 5 * appScale; //15 * appScale; 
-    static yAcceleration = 3 * appScale / fpsMult;
+    static yAcceleration = 2.4 * appScale / fpsMult;
     constructor(side = 'left', control = 'player') {
         this.control = control; 
         if (side == 'left') {
@@ -69,9 +69,9 @@ class Paddle {
                 this.ySpeed = constrain(this.ySpeed, -Paddle.maxSpeed, 0); 
             }
         } else {
-            if (this.yMidpoint() > ball.y) {
+            if (this.yMidpoint() > (ball.y + Paddle.height/4)) {
                 this.ySpeed += Paddle.yAcceleration; 
-            } else if (this.yMidpoint() < ball.y) { 
+            } else if (this.yMidpoint() < (ball.y - Paddle.height/4)) { 
                 this.ySpeed -= Paddle.yAcceleration; 
             }else if (this.ySpeed > 0) {
                 this.ySpeed -= Paddle.yAcceleration; 

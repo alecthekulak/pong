@@ -57,7 +57,7 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
     }
     bounce(paddle) {
         let displacement = 2 * abs(paddle.yMidpoint() - this.y) / Paddle.height;
-        let bounceAngle = displacement * Ball.maxAngle;
+        let bounceAngle = displacement * Ball.maxAngle * Math.PI / 180;
         console.log(`displacement: ${displacement}, bounceAngle: ${bounceAngle}, left: ${paddle.isLeft}`);
         if (paddle.isLeft) {
             this.xSpeed = Ball.maxSpeed * Math.cos(bounceAngle);
