@@ -18,8 +18,8 @@ function setup() {
     canvas.parent('p5Container');
     frameRate(30 * fpsMult);
     ball = new Ball(); 
-    player = new Paddle('left'); 
-    opponent = new Paddle('right'); 
+    player = new Paddle('left', 'player'); 
+    opponent = new Paddle('right', 'computer'); 
     textFont(font);
     textSize(40*appScale);
     textAlign(CENTER);
@@ -65,5 +65,21 @@ function drawDashedLine() {
     const dashLength = appHeight / dashes; 
     for (let i = 0; i < dashes; i++) {
         line(appWidth/2, i * dashLength, appWidth/2, i * dashLength + dashSize * dashLength)
+    }
+}
+function keyPressed() {
+    if (keyCode == 49) {
+        if (player.control == 'player') {
+            player.control = 'computer';
+        } else if (player.control == 'computer') {
+            player.control = 'player';
+        }
+    } else if (keyCode == 50) {
+        if (opponent.control == 'player') {
+            opponent.control = 'computer';
+        } else if (opponent.control == 'computer') {
+            opponent.control = 'player';
+        }
+
     }
 }
