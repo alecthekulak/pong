@@ -52,10 +52,10 @@ class Paddle {
             // console.log(`in Paddle, offset: ${this.paddleOffset}`);
             // console.log(`x: ${this.x}, y: ${this.y}`);
             // console.log(`width: ${this.width}, height: ${this.height}`);
-            // // console.log(`xSpeed: ${this.xSpeed}, ySpeed: ${this.ySpeed}`);
-            if (keyIsDown(UP_ARROW) || keyIsDown(87)) { //119
+            // console.log(`xSpeed: ${this.xSpeed}, ySpeed: ${this.ySpeed}`);
+            if (keyIsDown(UP_ARROW) || keyIsDown(87)) { 
                 this.ySpeed = Paddle.maxSpeed; // Move up 
-            } else if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) { //115
+            } else if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) { 
                 this.ySpeed = -Paddle.maxSpeed; // Move up 
             } 
         } else {
