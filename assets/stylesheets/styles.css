@@ -20,6 +20,7 @@ body, body * {
     background-color: green; /* temporary */ 
 }
 .text-section {
+    opacity: 0;
     /* http://www.tedmontgomery.com/tutorial/clrctgBL.html */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 17px; 

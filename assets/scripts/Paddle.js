@@ -13,13 +13,35 @@ class Paddle {
             this.x = this.paddleOffset;
         } else {
             this.player = false; 
-            this.x = this.appWidth - this.paddleOffset - this.width;
+            console.log(`appWidth: ${appWidth}, offset: ${this.paddleOffset}, width: ${this.width}`);
+            this.x = appWidth - this.paddleOffset - this.width;
         }
+        this.points = 0; 
         this.reset(); 
     }
+    left() {
+        return this.x; 
+    }
+    right() {
+        return this.x + this.width; 
+    }
+    top() {
+        return this.y;
+    }
+    bottom() {
+        return this.y + this.height; 
+    }
     reset() {
-        this.y = appHeight/2; 
+        this.y = appHeight/2 - this.height/2; 
         this.ySpeed = 0; 
+    }
+    collision(obj) {
+        if ((this.top() <= obj.top() && obj.top() <= this.bottom()) || (this.top() <= obj.bottom() && obj.bottom() <= this.bottom())) {
+            if ((this.left() <= obj.left() && obj.left() <= this.right()) || (this.left() <= obj.right() && obj.right() <= this.right())) {
+                return true; 
+            }
+        }
+        return false; 
     }
     update(ball) {
         if (this.player) {
@@ -27,47 +49,28 @@ class Paddle {
             // console.log(`x: ${this.x}, y: ${this.y}`);
             // console.log(`width: ${this.width}, height: ${this.height}`);
             // // console.log(`xSpeed: ${this.xSpeed}, ySpeed: ${this.ySpeed}`);
-            if (keyIsDown(UP_ARROW) || keyIsDown(119)) {
+            if (keyIsDown(UP_ARROW) || keyIsDown(87)) { //119
+                this.ySpeed = -this.maxSpeed; 
+            } else if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) { //115
                 this.ySpeed = this.maxSpeed; 
-            } else if (keyIsDown(DOWN_ARROW) || keyIsDown(115)) {
-                this.ySpeed = -1 * this.maxSpeed; 
+            } else {
+                this.ySpeed = 0; 
             }
-        }
-        
+        } 
         if (this.y < 0 || (this.y + this.height) > appHeight) {
             this.y = constrain(this.y, 0, appHeight-this.height); 
             this.ySpeed = 0; 
         }
-
         this.move();
+        if (this.collision(ball)) {
+            ball.xSpeed *= -1; 
+        }
     }
     move() {
         this.y += this.ySpeed; 
     }
     show() {
-        // noStroke();
-        color(255); //0
+        // color(255); //0
         rect(this.x, this.y, this.width, this.height);
     }
 }
-// // Old, object literal implimentation
-// var paddle0 = {
-//     width: 2, height: 28,
-//     x: 3, y: appHeight/2 - height/2,
-//     reset: function() {
-//         this.y = appHeight/2 - height/2;
-//     },
-//     show: function() {
-//         rect(x, y, width, height);
-//     }
-// };
-// var paddle1 = {
-//     width: 2, height: 28,
-//     x: appWidth-3-width, y: 40,
-//     reset: function() {
-//         this.y = appHeight/2 - height/2;
-//     },
-//     show: function() {
-//         rect(x, y, width, height);
-//     }
-// };
