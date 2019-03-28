@@ -66,7 +66,7 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         } else {
             this.xSpeed = Ball.maxSpeed * -Math.cos(bounceAngle);
             this.ySpeed = Ball.maxSpeed * Math.sin(bounceAngle);
-            this.x = paddle () - (Ball.size/2) - 1; 
+            this.x = paddle.left() - (Ball.size/2) - 1; 
         }
     }
     show() {
