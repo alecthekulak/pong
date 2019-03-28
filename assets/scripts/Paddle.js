@@ -3,18 +3,17 @@
 // Paddles
 // Default Dimensions: 2x28, Speed: 4
 class Paddle {
-    width = 2;
-    height = 28; 
-    maxSpeed = 4;
-    paddleOffset = 15; 
+    width = 2 * appScale;
+    height = 28 * appScale; 
+    maxSpeed = 4 * appScale / fpsMult;
+    paddleOffset = 15 * appScale; 
     constructor(side = 'left') {
-        switch (side) {
-            case 'left': 
-                this.player = true;
-                this.x = this.paddle_offset;
-            default: 
-                this.player = false; 
-                this.x = this.appWidth - this.paddle_offset - this.width;
+        if (side == 'left') {
+            this.player = true;
+            this.x = this.paddleOffset;
+        } else {
+            this.player = false; 
+            this.x = this.appWidth - this.paddleOffset - this.width;
         }
         this.reset(); 
     }
@@ -22,16 +21,24 @@ class Paddle {
         this.y = appHeight/2; 
         this.ySpeed = 0; 
     }
-    update() {
-        if (keyIsDown(UP_ARROW) || keyIsDown(119)) {
-            this.ySpeed = this.maxSpeed; 
-        } else if (keyIsDown(DOWN_ARROW) || keyIsDown(115)) {
-            this.ySpeed = -1 * this.maxSpeed; 
+    update(ball) {
+        if (this.player) {
+            // console.log(`in Paddle, offset: ${this.paddleOffset}`);
+            // console.log(`x: ${this.x}, y: ${this.y}`);
+            // console.log(`width: ${this.width}, height: ${this.height}`);
+            // // console.log(`xSpeed: ${this.xSpeed}, ySpeed: ${this.ySpeed}`);
+            if (keyIsDown(UP_ARROW) || keyIsDown(119)) {
+                this.ySpeed = this.maxSpeed; 
+            } else if (keyIsDown(DOWN_ARROW) || keyIsDown(115)) {
+                this.ySpeed = -1 * this.maxSpeed; 
+            }
         }
+        
         if (this.y < 0 || (this.y + this.height) > appHeight) {
             this.y = constrain(this.y, 0, appHeight-this.height); 
             this.ySpeed = 0; 
         }
+
         this.move();
     }
     move() {
@@ -39,6 +46,7 @@ class Paddle {
     }
     show() {
         // noStroke();
+        color(255); //0
         rect(this.x, this.y, this.width, this.height);
     }
 }

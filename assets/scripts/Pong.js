@@ -1,17 +1,20 @@
 // Alterable Parameters
-const appScale = 1.8;
+const appScale = 2;
+const fpsMult = 2; 
 // Variable & constant declarations 
-const appHeight = 256 * appScale, appWidth = 512 * appScale; 
+var appHeight = 256 * appScale; 
+var appWidth = 512 * appScale; 
 var lastPoint = 'player'; 
 // const ball, player, opponent; 
 //
 function setup() {
     canvas = createCanvas(appWidth, appHeight);
     canvas.parent('p5Container');
-    frameRate(30);
+    frameRate(30 * fpsMult);
     ball = new Ball(); 
-    player = new Paddle(); 
-    opponent = new Paddle(); 
+    player = new Paddle('left'); 
+    opponent = new Paddle('right'); 
+    console.log(`AppHeight: ${appHeight}, AppWidth: ${appWidth}`);
 }
 function draw() {
     frameRate(30);

@@ -1,8 +1,8 @@
 // Ball
 // Default Dimensions: 5x5, Speed: 7 (in each direction)
 class Ball {
-    size = 5; 
-    maxSpeed = 7;
+    size = 5 * appScale; 
+    maxSpeed = 7 * appScale / fpsMult;
     constructor() {
         this.reset('left'); 
     }
@@ -21,14 +21,30 @@ class Ball {
                 this.xSpeed = this.maxSpeed * Math.floor(2 * Math.random() - 1);; 
         }
     }
+    left() {
+        return this.x - (this.size/2); 
+    }
+    right() {
+        return this.x + (this.size/2); 
+    }
+    top() {
+        return this.y - (this.size/2); 
+    }
+    bottom() {
+        return this.y + (this.size/2); 
+    }
     update() {
-        console.log(`Key: ${key}`);
-        console.log(`KeyCode: ${keyCode}`);
-        if (this.x < (this.size/2) || this.x > (appHeight - this.size/2)) { 
+        // console.log(`AppHeight: ${appHeight}, AppWidth: ${appWidth}`);
+        // console.log(`x: ${this.x}, y: ${this.y}`);
+        // console.log(`xSpeed: ${this.xSpeed}, ySpeed: ${this.ySpeed}`);
+        // if (this.left() < 0 || this.x > (appWidth - this.size/2)) { 
+        if (this.left() < 0 || this.right() > appWidth) { 
             // TODO: Change from reflection to 'score point' 
             this.xSpeed *= -1; 
         }
-        if (this.y < (this.size/2) || this.y > (appWidth - this.size/2)) {
+        // if (this.y < (this.size/2) || this.y > (appHeight - this.size/2)) {
+        if (this.top() < 0 || this.bottom() > appHeight) { 
+            this.y = constrain(this.y, this.size/2, appHeight - this.size/2);
             this.ySpeed *= -1; 
         }
         this.move(); 
