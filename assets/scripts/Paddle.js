@@ -41,6 +41,9 @@ class Paddle {
     }
     reset() {
         this.y = appHeight/2 - Paddle.height/2; 
+        if (this.control == 'player') {
+            this.y -= 7; 
+        }
         this.ySpeed = 0; 
     }
     collision(obj) {

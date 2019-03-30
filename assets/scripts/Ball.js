@@ -13,6 +13,7 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         this.alive = true; 
         if (side == 'left') {
             // console.log(`paddle off: ${Paddle.paddleOffset}, paddle width: ${Paddle.width}`);
+            this.y -= 7; 
             this.x = Paddle.paddleOffset + Paddle.width + 10;
             this.xSpeed = -Ball.maxSpeed; 
         } else if (side == 'mid') {
