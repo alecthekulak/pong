@@ -14,7 +14,7 @@ class Paddle {
     static yAcceleration = 0.5 * this.maxSpeed; //2.4
     static delay = 2 * 1000; // half a second prediction delay 
     static refresh() {
-        Paddle.maxSpeed = 7 * appScale * speed; 
+        Paddle.maxSpeed = 7 * appScale * speed;
         Paddle.yAcceleration = 0.5 * Paddle.maxSpeed;
     }
     constructor(side = 'left', control = 'player') {
@@ -29,16 +29,18 @@ class Paddle {
         this.points = 0;
         this.reset();
     }
-    left() { 
-        if (this.isLeft) { 
-            return this.right() - Ball.maxSpeed; 
+    left() {
+        if (this.isLeft) {
+            return this.right() - Ball.maxSpeed;
         }
-        return this.x; }
-    right() { 
-        if (!this.isLeft) { 
-            return this.x + Ball.maxSpeed; 
+        return this.x;
+    }
+    right() {
+        if (!this.isLeft) {
+            return this.x + Ball.maxSpeed;
         }
-        return this.x + Paddle.width; }
+        return this.x + Paddle.width;
+    }
     top() { return this.y; }
     bottom() { return this.y + Paddle.height; }
     xMidpoint() { return this.x + (Paddle.width / 2); }
@@ -74,7 +76,6 @@ class Paddle {
     update(ball) {
         if (ball.predCurrent == 0 && ball.isTowards(this)) {
             ball.predict(this);
-            // setTimeout(ball.predict(this), 2000);
         }
         if (this.control.value == 'player') {
             // console.log(`in Paddle, offset: ${this.paddleOffset}`);
