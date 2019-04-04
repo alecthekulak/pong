@@ -2,7 +2,7 @@
 appScale = 2;
 console.log("started");
 // speedSelector = new Iterator([2, 4, 8]); 
-fpsMult = 2;
+speed = 0.5;
 function preload() {
     font = loadFont('assets/fonts/bit5x3.ttf'); //bit5x3 //bit5x5 //bit9x9
     if (windowHeight <= 512 || windowWidth <= 1024) {
@@ -18,7 +18,7 @@ const dashes = 30; const dashSize = 0.6;
 function setup() {
     canvas = createCanvas(appWidth, appHeight);
     canvas.parent('p5Container');
-    frameRate(30); // * fpsMult / 2
+    frameRate(30);
     ball = new Ball();
     // player = new Paddle('left', 'player');
     player = new Paddle('left', 'computer_follow');
@@ -87,9 +87,9 @@ function keyPressed() {
     } else if (key == 'f') { // Toggle framerate
         toggleFrames(30);
     } else if (key == 's') {
-        
-        // fpsMult = toggleSpeed(fpsMult); 
-        // Ball.refresh();
-        // Paddle.refresh(); 
+        speed = toggleSpeed(speed); 
+        console.log(`new speed: ${speed}`);
+        Ball.refresh();
+        Paddle.refresh(); 
     }
 }

@@ -2,10 +2,11 @@
 // Default Dimensions: 5x5, Speed: 7 (in each direction)
 class Ball { // Consider doing ball as a square, as they did on the 1972 Atari 
     static size = 5 * appScale;
-    static maxSpeed = 9 * appScale / fpsMult; //7 * appScale / fpsMult;
+    static maxSpeed = 9 * appScale * speed; //7 * appScale * speed;
     static maxAngle = 70; //75; 
     static refresh() {
-        Ball.maxSpeed = 9 * appScale / fpsMult;
+        Ball.maxSpeed = 9 * appScale * speed;
+        console.log(`new max speed: ${Ball.maxSpeed}`);
     }
     constructor() {
         this.reset('mid');
@@ -17,13 +18,13 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         if (side == 'left') {
             // console.log(`paddle off: ${Paddle.paddleOffset}, paddle width: ${Paddle.width}`);
             this.y -= 7;
-            this.x = Paddle.paddleOffset + Paddle.width + 10;
+            this.x = Paddle.paddleOffset + Paddle.width + Ball.maxSpeed * 3;
             this.xSpeed = -Ball.maxSpeed;
         } else if (side == 'mid') {
             this.x = appWidth / 2;
             this.xSpeed = -Ball.maxSpeed;
         } else {
-            this.x = appWidth - (Paddle.paddleOffset + Paddle.width + 10);
+            this.x = appWidth - (Paddle.paddleOffset + Paddle.width + Ball.maxSpeed * 3);
             this.xSpeed = Ball.maxSpeed;
         }
         this.xPred = this.x;
@@ -41,7 +42,7 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         }
         // console.log(`AppHeight: ${appHeight}, AppWidth: ${appWidth}`);
         // console.log(`x: ${this.x}, y: ${this.y}`);
-        // console.log(`xSpeed: ${this.xSpeed}, ySpeed: ${this.ySpeed}`);
+        // console.log(`xSpeed: ${this.xSpeed}, ySpeed: ${this.ySpeed}, maxSpeed: ${Ball.maxSpeed}`);
         if (this.left() < 0 || this.right() > appWidth) {
             this.alive = false;
         }

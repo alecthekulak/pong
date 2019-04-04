@@ -24,6 +24,10 @@ class Iterator {
         }
         this.value = this.list[this.i];
     }
+    // toggle(list, selection=0, clean=list){
+    //     this.constructor(list, selection, clean); 
+    //     this.addInvProd(); 
+    // }
     next() {
         this.i = (this.i + 1) % (this.list.length);
         this.value = this.list[this.i];
@@ -31,28 +35,38 @@ class Iterator {
     getClean() {
         return this.clean[this.i];
     }
-    // addInvProd() {
-    //     let cumProd = this.list.reduce((total, val) => total * val);
-    //     this.list.push(1 / cumProd);
-    //     this.clean.push(1 / cumProd);
-    // }
+    asToggle() {
+        let cumProd = this.list.reduce((total, val) => total * val);
+        this.list.push(1 / cumProd);
+        this.clean.push(1 / cumProd);
+        return this;
+    }
 }
-// toggleAmount = new Iterator([0.5, 0.5, 0.5]);
-// function toggleSpeed(val) {
-//     console.log(`list: ${toggleAmount.list}`);
-//     let newVal = Math.round(val * toggleAmount.value);
-//     toggleAmount.next(); 
-//     return newVal; 
-// } // 'frameRate()' doesn't work any more for some reason 
+// speedToggler = new Iterator([0.5, 0.5]).asToggle();
+speedToggler = new Iterator([2, 2]).asToggle();
+function toggleSpeed(speed) {
+    // if (speedToggler.value == 1) {
+    //     toggleFrames(30); 
+    //     speedToggler.next(); 
+    //     return newSpeed; 
+    // } else if (speedToggler.value < 1) {
+    //     toggleFrames(30); 
+    //     speedToggler.next(); 
+    //     return newSpeed; 
+    // }
+    let newSpeed = speed * speedToggler.value;
+    speedToggler.next(); 
+    return newSpeed; 
+} // 'frameRate()' doesn't work any more for some reason 
 frameToggler = new Iterator([2, -1]); 
 function toggleFrames(original) { // Fps can't go over 60 usually 
-    console.log(`speed : ${frameRate()}`); 
     if (frameToggler.value < 0) {
-        frameRate(original);
+        var newVal = original;
     } else {
-        let newVal = Math.round(frameRate() * frameToggler.value);
-        frameRate(newVal);
+        var newVal = Math.round(frameRate() * frameToggler.value);
     }
+    frameRate(newVal);
+    console.log(`new FPS: ${newVal}`); 
     frameToggler.next();
 }
 // redraw(); makes draw execute once, can use for training? draw once everything is ready instead of waiting for fps?
