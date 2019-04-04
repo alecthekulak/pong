@@ -84,9 +84,7 @@ function keyPressed() {
         opponent.control.next(); 
     } else if (key == 'p') { // Pause 
         pause();
-    } else if (key == 'f') { // Toggle framerate
-        toggleFrames(30);
-    } else if (key == 's') {
+    } else if (key == 's') { // Toggle speed 
         speed = toggleSpeed(speed); 
         console.log(`new speed: ${speed}`);
         Ball.refresh();

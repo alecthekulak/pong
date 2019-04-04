@@ -30,7 +30,7 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         this.xPred = this.x;
         this.yPred = this.y;
         this.ySpeedPred = this.ySpeed;
-        this.predCurrent = false; 
+        this.lastPred = -1;
     }
     left() { return this.x - (Ball.size / 2); }
     right() { return this.x + (Ball.size / 2); }
@@ -39,6 +39,13 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
     update() {
         if (this.xSpeed == 0 && this.ySpeed == 0) {
             this.xSpeed = Ball.maxSpeed * 2 * (Math.floor(2 * Math.random()) - 0.5);
+        }
+        if (this.predCurrent == 1 && this.x > appWidth / 2) {
+            console.log(`pred cur: ${this.predCurrent}`);
+            this.predCurrent = 0;
+        } else if (this.predCurrent == -1 && this.x < appWidth / 2) {
+            this.predCurrent = 0;
+            console.log(`pred cur: ${this.predCurrent}`);
         }
         // console.log(`AppHeight: ${appHeight}, AppWidth: ${appWidth}`);
         // console.log(`x: ${this.x}, y: ${this.y}`);
@@ -53,8 +60,8 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         this.move();
     }
     bounce(paddle) {
-        this.predCurrent = false; 
-        let displacement = 2 * (paddle.yMidpoint() - this.y) / Paddle.height; // abs()
+        this.predCurrent = 0;
+        let displacement = 2 * (paddle.yMidpoint() - this.y) / Paddle.height;
         let bounceAngle = displacement * Ball.maxAngle * Math.PI / 180;
         // console.log(`Ball displacement: ${displacement.toFixed(2)}, bounceAngle: ${(bounceAngle * 180 / Math.PI).toFixed(2)}, left paddle?: ${paddle.isLeft}`);
         if (paddle.isLeft) {
@@ -75,24 +82,19 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         return (Math.sign(paddle.x - this.x) == Math.sign(this.xSpeed));
     }
     predict(paddle) {
+        console.log(`making a prediction for (left: ${paddle.isLeft})`);
         this.xPred = this.x;
         this.yPred = this.y;
         this.ySpeedPred = this.ySpeed;
-        // console.log(`before pred, ball: ${this.yPred}`);
-        // console.log(`ball x: ${this.xPred}, paddle x: ${paddle.x}    (max speed: ${Ball.maxSpeed})`);
         while (abs(this.xPred - paddle.x) > Ball.maxSpeed) {
             this.xPred += this.xSpeed;
             this.yPred += this.ySpeedPred;
-            // console.log(`      ${(this.yPred + (this.height / 2))} and ${(this.yPred + this.height / 2)}`)
             if ((this.yPred + Ball.size / 2) < 0 || (this.yPred - Ball.size / 2) > appHeight) {
-                // console.log(`predicting bounce, ball x: ${this.xPred}, ball y: ${this.yPred}, speed:: ${this.ySpeedPred}`);
                 this.yPred = constrain(this.yPred, Ball.size / 2, appHeight - Ball.size / 2);
                 this.ySpeedPred *= -1;
-                // console.log(`after bounce, ball x: ${this.xPred}, ball y: ${this.yPred}, speed:: ${this.ySpeedPred}`);
             }
         }
-        this.predCurrent = true; 
-        // console.log(`after pred, ball: ${this.yPred}`);
+        this.predCurrent = (this.x < appWidth / 2) ? 1 : -1;
     }
     show() {
         circle(this.x, this.y, Ball.size / 2);

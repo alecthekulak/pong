@@ -43,30 +43,22 @@ class Iterator {
     }
 }
 // speedToggler = new Iterator([0.5, 0.5]).asToggle();
-speedToggler = new Iterator([2, 2]).asToggle();
+speedToggler = new Iterator([1, 2, 2]).asToggle();
 function toggleSpeed(speed) {
-    // if (speedToggler.value == 1) {
-    //     toggleFrames(30); 
-    //     speedToggler.next(); 
-    //     return newSpeed; 
-    // } else if (speedToggler.value < 1) {
-    //     toggleFrames(30); 
-    //     speedToggler.next(); 
-    //     return newSpeed; 
-    // }
+    if (speedToggler.value <= 1) {
+        toggleFrames(); 
+    }
     let newSpeed = speed * speedToggler.value;
     speedToggler.next(); 
     return newSpeed; 
 } // 'frameRate()' doesn't work any more for some reason 
-frameToggler = new Iterator([2, -1]); 
-function toggleFrames(original) { // Fps can't go over 60 usually 
-    if (frameToggler.value < 0) {
-        var newVal = original;
+targetRate = 30;
+function toggleFrames() { // Fps can't go over 60 usually 
+    if (targetRate == 30) {
+        targetRate = 60;
     } else {
-        var newVal = Math.round(frameRate() * frameToggler.value);
+        targetRate = 30;
     }
-    frameRate(newVal);
-    console.log(`new FPS: ${newVal}`); 
-    frameToggler.next();
+    frameRate(targetRate); 
 }
 // redraw(); makes draw execute once, can use for training? draw once everything is ready instead of waiting for fps?

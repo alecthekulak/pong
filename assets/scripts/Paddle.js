@@ -8,7 +8,6 @@ var allControls = {
 }
 class Paddle {
     static width = Ball.maxSpeed; //2 * appScale;
-    // static width = 5 * appScale; //2 * appScale;
     static height = 28 * appScale;
     static maxSpeed = 7 * appScale * speed; //4 * appScale * speed;
     static paddleOffset = 5 * appScale; //15 * appScale; 
@@ -17,17 +16,14 @@ class Paddle {
     static refresh() {
         Paddle.maxSpeed = 7 * appScale * speed; 
         Paddle.yAcceleration = 0.5 * Paddle.maxSpeed;
-        // console.log(`width: ${Paddle.width}`);
     }
     constructor(side = 'left', control = 'player') {
-        // this.control = new Iterator(allControls, control);
         this.control = new Iterator(allControls, control);
         if (side == 'left') {
             this.isLeft = true;
             this.x = Paddle.paddleOffset;
         } else {
             this.isLeft = false;
-            // console.log(`appWidth: ${appWidth}, offset: ${Paddle.paddleOffset}, width: ${Paddle.width}`);
             this.x = appWidth - Paddle.paddleOffset - Paddle.width;
         }
         this.points = 0;
@@ -76,8 +72,9 @@ class Paddle {
         }
     }
     update(ball) {
-        if (!ball.predCurrent && ball.isTowards(this)) {
-            setTimeout(ball.predict(this), 2000);
+        if (ball.predCurrent == 0 && ball.isTowards(this)) {
+            ball.predict(this);
+            // setTimeout(ball.predict(this), 2000);
         }
         if (this.control.value == 'player') {
             // console.log(`in Paddle, offset: ${this.paddleOffset}`);
