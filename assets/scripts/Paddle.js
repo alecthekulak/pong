@@ -1,15 +1,21 @@
 // // Variable and constant declarations 
-// const paddle_offset = 15; 
 // Paddles
 // Default Dimensions: 2x28, Speed: 4
+var allControls = {
+    'player': 'Player-Controlled',
+    'computer_follow': 'Naive Computer',
+    'computer_predict': 'Predictive Computer'
+}
 class Paddle {
     static width = 5 * appScale; //2 * appScale;
     static height = 28 * appScale;
     static maxSpeed = 7 * appScale / fpsMult; //4 * appScale / fpsMult;
     static paddleOffset = 5 * appScale; //15 * appScale; 
-    static yAcceleration = 2.4 * appScale / fpsMult;
+    static yAcceleration = 0.5 * this.maxSpeed; //2.4
+    static delay = 2 * 1000; // half a second prediction delay 
     constructor(side = 'left', control = 'player') {
-        this.control = control;
+        // this.control = new Iterator(allControls, control);
+        this.control = new Iterator(allControls, control);
         if (side == 'left') {
             this.isLeft = true;
             this.x = Paddle.paddleOffset;
@@ -27,9 +33,18 @@ class Paddle {
     bottom() { return this.y + Paddle.height; }
     xMidpoint() { return this.x + (Paddle.width / 2); }
     yMidpoint() { return this.y + (Paddle.height / 2); }
+    getControl() {
+        if (this.control.value == 'player') {
+            return 'Player controlled';
+        } else if (this.control.value == 'computer_follow') {
+            return 'Naive Computer';
+        } else if (this.control.value == 'computer_predict') {
+            return 'Predictive Computer';
+        }
+    }
     reset() {
         this.y = appHeight / 2 - Paddle.height / 2;
-        if (this.control == 'player') {
+        if (this.isLeft) {
             this.y += 7;
         }
         this.ySpeed = 0;
@@ -42,8 +57,26 @@ class Paddle {
         }
         return false;
     }
+    moveTo(yLocation, margin = Paddle.height / 2) { // height / 2 is max
+        if (this.yMidpoint() > (yLocation + margin)) {
+            this.ySpeed += Paddle.yAcceleration;
+        } else if (this.yMidpoint() < (yLocation - margin)) {
+            this.ySpeed -= Paddle.yAcceleration;
+        } else if (this.ySpeed > 0) {
+            this.ySpeed -= Paddle.yAcceleration;
+            this.ySpeed = constrain(this.ySpeed, 0, Paddle.maxSpeed);
+        } else if (this.ySpeed < 0) {
+            this.ySpeed += Paddle.yAcceleration;
+            this.ySpeed = constrain(this.ySpeed, -Paddle.maxSpeed, 0);
+        }
+    }
     update(ball) {
-        if (this.control == 'player') {
+        if (!ball.predCurrent && ball.isTowards(this)) {
+            // console.log(`before pred, ball: ${ball.yPred}`);
+            setTimeout(ball.predict(this), this.delay);
+            // console.log(`after pred, ball: ${ball.yPred}`);
+        }
+        if (this.control.value == 'player') {
             // console.log(`in Paddle, offset: ${this.paddleOffset}`);
             // console.log(`x: ${this.x}, y: ${this.y}`);
             // console.log(`width: ${this.width}, height: ${this.height}`);
@@ -59,17 +92,16 @@ class Paddle {
                 this.ySpeed += Paddle.yAcceleration;
                 this.ySpeed = constrain(this.ySpeed, -Paddle.maxSpeed, 0);
             }
-        } else {
-            if (this.yMidpoint() > (ball.y + Paddle.height / 4)) {
-                this.ySpeed += Paddle.yAcceleration;
-            } else if (this.yMidpoint() < (ball.y - Paddle.height / 4)) {
-                this.ySpeed -= Paddle.yAcceleration;
-            } else if (this.ySpeed > 0) {
-                this.ySpeed -= Paddle.yAcceleration;
-                this.ySpeed = constrain(this.ySpeed, 0, Paddle.maxSpeed);
-            } else if (this.ySpeed < 0) {
-                this.ySpeed += Paddle.yAcceleration;
-                this.ySpeed = constrain(this.ySpeed, -Paddle.maxSpeed, 0);
+        } else if (this.control.value == 'computer_follow') {
+            this.moveTo(ball.y, Paddle.height / 4); //Paddle.height / 4
+        } else { //this.control == 'computer_predict') {
+            // console.log(`In 'computer_predict'`);
+            if (!ball.isTowards(this)) {
+                // console.log(`move to center`);
+                this.moveTo(appHeight / 2);
+            } else {
+                // console.log(`move to ball, this: ${this.yMidpoint()}, ball: ${ball.yPred}`);
+                this.moveTo(ball.yPred);
             }
         }
         this.ySpeed = constrain(this.ySpeed, -Paddle.maxSpeed, Paddle.maxSpeed);

@@ -1,6 +1,7 @@
 // Alterable Parameters
 appScale = 2;
 console.log("started");
+// speedSelector = new Iterator([2, 4, 8]); 
 const fpsMult = 2;
 function preload() {
     font = loadFont('assets/fonts/bit5x3.ttf'); //bit5x3 //bit5x5 //bit9x9
@@ -19,8 +20,10 @@ function setup() {
     canvas.parent('p5Container');
     frameRate(30 * fpsMult);
     ball = new Ball();
-    player = new Paddle('left', 'player');
-    opponent = new Paddle('right', 'computer');
+    // player = new Paddle('left', 'player');
+    player = new Paddle('left', 'computer_follow');
+    // opponent = new Paddle('right', 'computer_follow');
+    opponent = new Paddle('right', 'computer_predict');
     textFont(font);
     textSize(40 * appScale);
     textAlign(CENTER);
@@ -39,25 +42,32 @@ function draw() {
     player.update(ball);
     opponent.update(ball);
     // ball.predict(30); 
-    if (ball.isTowards(opponent) && !ball.predCurrent) {
-        console.log(`Ball is towards opponent.`);
-        console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
-        ball.predict(opponent);
-        console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
-    }
+    // if (ball.isTowards(opponent) && !ball.predCurrent) {
+    //     console.log(`Ball is towards opponent.`);
+    //     console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
+    //     ball.predict(opponent);
+    //     console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
+    // }
     // console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
     //
     ball.show();
     player.show();
     opponent.show();
+
     // Display Points 
     stroke(255);
     fill(255);
     drawDashedLine();
-    // scale(2);
     scale(1, 2);
-    text(str(player.points).padStart(2, '0'), appWidth / 4, appHeight / 8);
-    text(str(opponent.points).padStart(2, '0'), 3 * appWidth / 4, appHeight / 8);
+    textSize(40 * appScale);
+    textAlign(CENTER, CENTER);
+    text(str(player.points).padStart(2, '0'), appWidth / 4, appHeight / 9);
+    text(str(opponent.points).padStart(2, '0'), 3 * appWidth / 4, appHeight / 9);
+    textSize(6 * appScale);
+    textAlign(LEFT, TOP);
+    text(player.control.getClean(), 6, 3);
+    textAlign(RIGHT);
+    text(opponent.control.getClean(), appWidth-6, 3);
 }
 function resetAll() {
     player.reset();
@@ -77,21 +87,11 @@ function drawDashedLine() {
     }
 }
 function keyPressed() {
-    if (keyCode == 49) {
-        if (player.control == 'player') {
-            player.control = 'computer';
-        } else if (player.control == 'computer') {
-            player.control = 'player';
-        }
-    } else if (keyCode == 50) {
-        if (opponent.control == 'player') {
-            opponent.control = 'computer';
-        } else if (opponent.control == 'computer') {
-            opponent.control = 'player';
-        }
-    }
-    if (key == 'p') {
-        console.log("'p' hit, pausing.");
+    if (key == '1') { // keyCode == 49
+        player.control.next(); 
+    } else if (key == '2') { // keyCode == 50
+        opponent.control.next(); 
+    } else if (key == 'p') {
         pause();
     }
 }
