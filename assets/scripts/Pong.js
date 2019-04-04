@@ -2,7 +2,7 @@
 appScale = 2;
 console.log("started");
 // speedSelector = new Iterator([2, 4, 8]); 
-const fpsMult = 2;
+fpsMult = 2;
 function preload() {
     font = loadFont('assets/fonts/bit5x3.ttf'); //bit5x3 //bit5x5 //bit9x9
     if (windowHeight <= 512 || windowWidth <= 1024) {
@@ -18,7 +18,7 @@ const dashes = 30; const dashSize = 0.6;
 function setup() {
     canvas = createCanvas(appWidth, appHeight);
     canvas.parent('p5Container');
-    frameRate(30 * fpsMult);
+    frameRate(30); // * fpsMult / 2
     ball = new Ball();
     // player = new Paddle('left', 'player');
     player = new Paddle('left', 'computer_follow');
@@ -30,26 +30,17 @@ function setup() {
     console.log(`AppHeight: ${appHeight}, AppWidth: ${appWidth}`);
 }
 function draw() {
-    frameRate(30);
     background(0); //53
     noStroke();
     // Determine if game is still going 
     if (!ball.alive) {
         resetAll();
     }
-    //
+
+    // Update positions and display objects
     ball.update();
     player.update(ball);
     opponent.update(ball);
-    // ball.predict(30); 
-    // if (ball.isTowards(opponent) && !ball.predCurrent) {
-    //     console.log(`Ball is towards opponent.`);
-    //     console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
-    //     ball.predict(opponent);
-    //     console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
-    // }
-    // console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
-    //
     ball.show();
     player.show();
     opponent.show();
@@ -87,11 +78,18 @@ function drawDashedLine() {
     }
 }
 function keyPressed() {
-    if (key == '1') { // keyCode == 49
+    if (key == '1') { // keyCode == 49 // Toggle control of left paddle
         player.control.next(); 
-    } else if (key == '2') { // keyCode == 50
+    } else if (key == '2') { // keyCode == 50 // Toggle control of right paddle
         opponent.control.next(); 
-    } else if (key == 'p') {
+    } else if (key == 'p') { // Pause 
         pause();
+    } else if (key == 'f') { // Toggle framerate
+        toggleFrames(30);
+    } else if (key == 's') {
+        
+        // fpsMult = toggleSpeed(fpsMult); 
+        // Ball.refresh();
+        // Paddle.refresh(); 
     }
 }

@@ -15,7 +15,7 @@ class Iterator {
             this.clean = this.list.map(key => list[key]);
         } else { // for passed lists 
             this.list = list;
-            this.clean = clean;
+            this.clean = Array.from(clean);
         }
         if (Number.isInteger(selection)) {
             this.i = selection;
@@ -31,10 +31,28 @@ class Iterator {
     getClean() {
         return this.clean[this.i];
     }
+    // addInvProd() {
+    //     let cumProd = this.list.reduce((total, val) => total * val);
+    //     this.list.push(1 / cumProd);
+    //     this.clean.push(1 / cumProd);
+    // }
 }
-// toggleAmount = new Iterator([2, 2, 0.4]);
-// function toggleSpeed() {
-//     frameRate(frameRate() * toggleAmount.value); 
+// toggleAmount = new Iterator([0.5, 0.5, 0.5]);
+// function toggleSpeed(val) {
+//     console.log(`list: ${toggleAmount.list}`);
+//     let newVal = Math.round(val * toggleAmount.value);
 //     toggleAmount.next(); 
-// }
+//     return newVal; 
+// } // 'frameRate()' doesn't work any more for some reason 
+frameToggler = new Iterator([2, -1]); 
+function toggleFrames(original) { // Fps can't go over 60 usually 
+    console.log(`speed : ${frameRate()}`); 
+    if (frameToggler.value < 0) {
+        frameRate(original);
+    } else {
+        let newVal = Math.round(frameRate() * frameToggler.value);
+        frameRate(newVal);
+    }
+    frameToggler.next();
+}
 // redraw(); makes draw execute once, can use for training? draw once everything is ready instead of waiting for fps?

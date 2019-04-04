@@ -4,6 +4,9 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
     static size = 5 * appScale;
     static maxSpeed = 9 * appScale / fpsMult; //7 * appScale / fpsMult;
     static maxAngle = 70; //75; 
+    static refresh() {
+        Ball.maxSpeed = 9 * appScale / fpsMult;
+    }
     constructor() {
         this.reset('mid');
     }

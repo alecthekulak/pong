@@ -13,6 +13,9 @@ class Paddle {
     static paddleOffset = 5 * appScale; //15 * appScale; 
     static yAcceleration = 0.5 * this.maxSpeed; //2.4
     static delay = 2 * 1000; // half a second prediction delay 
+    static refresh() {
+        Paddle.maxSpeed = 7 * appScale / fpsMult; 
+    }
     constructor(side = 'left', control = 'player') {
         // this.control = new Iterator(allControls, control);
         this.control = new Iterator(allControls, control);
@@ -72,9 +75,7 @@ class Paddle {
     }
     update(ball) {
         if (!ball.predCurrent && ball.isTowards(this)) {
-            // console.log(`before pred, ball: ${ball.yPred}`);
             setTimeout(ball.predict(this), this.delay);
-            // console.log(`after pred, ball: ${ball.yPred}`);
         }
         if (this.control.value == 'player') {
             // console.log(`in Paddle, offset: ${this.paddleOffset}`);
