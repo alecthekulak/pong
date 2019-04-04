@@ -21,28 +21,16 @@ class Paddle {
         this.points = 0;
         this.reset();
     }
-    left() {
-        return this.x;
-    }
-    right() {
-        return this.x + Paddle.width;
-    }
-    top() {
-        return this.y;
-    }
-    bottom() {
-        return this.y + Paddle.height;
-    }
-    xMidpoint() {
-        return this.x + (Paddle.width / 2);
-    }
-    yMidpoint() {
-        return this.y + (Paddle.height / 2);
-    }
+    left() { return this.x; }
+    right() { return this.x + Paddle.width; }
+    top() { return this.y; }
+    bottom() { return this.y + Paddle.height; }
+    xMidpoint() { return this.x + (Paddle.width / 2); }
+    yMidpoint() { return this.y + (Paddle.height / 2); }
     reset() {
         this.y = appHeight / 2 - Paddle.height / 2;
         if (this.control == 'player') {
-            this.y -= 7;
+            this.y += 7;
         }
         this.ySpeed = 0;
     }

@@ -12,6 +12,7 @@ function preload() {
 var appHeight = 256 * appScale;
 var appWidth = 512 * appScale;
 const dashes = 30; const dashSize = 0.6;
+// var paused = false; 
 //
 function setup() {
     canvas = createCanvas(appWidth, appHeight);
@@ -37,6 +38,12 @@ function draw() {
     ball.update();
     player.update(ball);
     opponent.update(ball);
+    // ball.predict(30); 
+    if (ball.isTowards(opponent) && !ball.predCurrent) {
+        console.log(`Ball is towards opponent.`);
+        ball.predict(opponent);
+    }
+    console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
     //
     ball.show();
     player.show();
@@ -47,8 +54,8 @@ function draw() {
     drawDashedLine();
     // scale(2);
     scale(1, 2);
-    text(player.points, appWidth / 4, appHeight / 8);
-    text(opponent.points, 3 * appWidth / 4, appHeight / 8);
+    text(str(player.points).padStart(2, '0'), appWidth / 4, appHeight / 8);
+    text(str(opponent.points).padStart(2, '0'), 3 * appWidth / 4, appHeight / 8);
 }
 function resetAll() {
     player.reset();
@@ -80,6 +87,9 @@ function keyPressed() {
         } else if (opponent.control == 'computer') {
             opponent.control = 'player';
         }
-
+    }
+    if (key == 'p') {
+        console.log("'p' hit, pausing.");
+        pause();
     }
 }
