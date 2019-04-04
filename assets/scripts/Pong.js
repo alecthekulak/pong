@@ -41,9 +41,11 @@ function draw() {
     // ball.predict(30); 
     if (ball.isTowards(opponent) && !ball.predCurrent) {
         console.log(`Ball is towards opponent.`);
+        console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
         ball.predict(opponent);
+        console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
     }
-    console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
+    // console.log(`Current x:${ball.x}, y:${ball.y}. Pred x:${ball.xPred}, y:${ball.yPred}`);
     //
     ball.show();
     player.show();
