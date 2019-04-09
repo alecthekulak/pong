@@ -38,7 +38,6 @@ class Iterator {
         return this;
     }
 }
-// speedToggler = new Iterator([0.5, 0.5]).asToggle();
 speedToggler = new Iterator([1, 2, 2]).asToggle();
 function toggleSpeed(speed) {
     if (speedToggler.value <= 1) {
@@ -47,9 +46,9 @@ function toggleSpeed(speed) {
     let newSpeed = speed * speedToggler.value;
     speedToggler.next();
     return newSpeed;
-} // 'frameRate()' doesn't work any more for some reason 
+} 
 targetRate = 30;
-function toggleFrames() { // Fps can't go over 60 usually 
+function toggleFrames() { // fps can't go over 60 usually 
     if (targetRate == 30) {
         targetRate = 60;
     } else {
