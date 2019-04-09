@@ -1,10 +1,10 @@
 // Alterable Parameters
 appScale = 2;
-console.log("started");
-// speedSelector = new Iterator([2, 4, 8]); 
+console.log("'Pong.js' started");
 speed = 0.5;
 function preload() {
-    font = loadFont('assets/fonts/bit5x3.ttf'); //bit5x3 //bit5x5 //bit9x9
+    scoreFont = loadFont('assets/fonts/bit5x3.ttf'); //bit5x3 //bit5x5 //bit9x9
+    labelFont = 'Helvetica';
     if (windowHeight <= 512 || windowWidth <= 1024) {
         appScale = 1;
     }
@@ -23,9 +23,6 @@ function setup() {
     player = new Paddle('left', 'computer_follow');
     // opponent = new Paddle('right', 'computer_follow');
     opponent = new Paddle('right', 'computer_predict');
-    textFont(font);
-    textSize(40 * appScale);
-    textAlign(CENTER);
     console.log(`AppHeight: ${appHeight}, AppWidth: ${appWidth}`);
 }
 // Run every frame
@@ -48,17 +45,19 @@ function draw() {
     // Display Points 
     stroke(255);
     fill(255);
+    textFont(labelFont);
+    textSize(8 * appScale);
+    textAlign(LEFT, TOP);
+    text(player.control.getClean().toUpperCase(), 6, 3);
+    textAlign(RIGHT);
+    text(opponent.control.getClean().toUpperCase(), appWidth - 6, 3);
     drawDashedLine();
     scale(1, 2);
-    textSize(40 * appScale);
+    textFont(scoreFont);
+    textSize(38 * appScale);
     textAlign(CENTER, CENTER);
     text(str(player.points).padStart(2, '0'), appWidth / 4, appHeight / 9);
     text(str(opponent.points).padStart(2, '0'), 3 * appWidth / 4, appHeight / 9);
-    textSize(6 * appScale);
-    textAlign(LEFT, TOP);
-    text(player.control.getClean(), 6, 3);
-    textAlign(RIGHT);
-    text(opponent.control.getClean(), appWidth - 6, 3);
 }
 function resetAll() {
     player.reset();

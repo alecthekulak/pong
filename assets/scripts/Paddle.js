@@ -76,7 +76,6 @@ class Paddle {
     update(ball) {
         if (ball.predCurrent == 0 && ball.isTowards(this)) {
             ball.predict(this);
-            // setTimeout(ball.predict(this), 2000);
         }
         if (this.control.value == 'player') {
             // console.log(`in Paddle, offset: ${this.paddleOffset}`);
