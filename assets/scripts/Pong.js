@@ -13,8 +13,7 @@ function preload() {
 var appHeight = 256 * appScale;
 var appWidth = 512 * appScale;
 const dashes = 30; const dashSize = 0.6;
-// var paused = false; 
-//
+// Run before first frame 
 function setup() {
     canvas = createCanvas(appWidth, appHeight);
     canvas.parent('p5Container');
@@ -29,6 +28,7 @@ function setup() {
     textAlign(CENTER);
     console.log(`AppHeight: ${appHeight}, AppWidth: ${appWidth}`);
 }
+// Run every frame
 function draw() {
     background(0); //53
     noStroke();
@@ -58,7 +58,7 @@ function draw() {
     textAlign(LEFT, TOP);
     text(player.control.getClean(), 6, 3);
     textAlign(RIGHT);
-    text(opponent.control.getClean(), appWidth-6, 3);
+    text(opponent.control.getClean(), appWidth - 6, 3);
 }
 function resetAll() {
     player.reset();
@@ -78,16 +78,16 @@ function drawDashedLine() {
     }
 }
 function keyPressed() {
-    if (key == '1') { // keyCode == 49 // Toggle control of left paddle
-        player.control.next(); 
-    } else if (key == '2') { // keyCode == 50 // Toggle control of right paddle
-        opponent.control.next(); 
-    } else if (key == 'p') { // Pause 
+    if (key === '1') { // keyCode == 49 // Toggle control of left paddle
+        player.control.next();
+    } else if (key === '2') { // keyCode == 50 // Toggle control of right paddle
+        opponent.control.next();
+    } else if (key === 'p') { // Pause 
         pause();
-    } else if (key == 's') { // Toggle speed 
-        speed = toggleSpeed(speed); 
+    } else if (key === 's') { // Toggle speed 
+        speed = toggleSpeed(speed);
         console.log(`new speed: ${speed}`);
         Ball.refresh();
-        Paddle.refresh(); 
+        Paddle.refresh();
     }
 }

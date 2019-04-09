@@ -1,4 +1,4 @@
-body, body * {
+body, body * { /* Whole document */ 
     margin: 0;
     padding: 0; 
     border: 0;
@@ -7,20 +7,23 @@ body, body * {
     display: block;
     background-color: black; 
 }
-#content-section {
-    /* height: 500px;  */
+#content-section { /* .js app */ 
     background-color: brown; /* temporary */ 
     display: flex;
     justify-content: center;
     align-items: center;
 }
-#p5Container {
+#p5Container { /* .js app */ 
     width: auto;
     display: inline-block;
     background-color: green; /* temporary */ 
 }
-.text-section {
-    opacity: 0;
+#bottom-section { /* text */ 
+    /* display: flex; */
+    padding: 1% 2.5%; 
+}
+.text-section { /* text */
+    /* opacity: 0; */
     /* http://www.tedmontgomery.com/tutorial/clrctgBL.html */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 17px; 
@@ -28,12 +31,9 @@ body, body * {
     color: rgb(192, 255, 255);
     text-align: justify;
 }
-#bottom-section {
-    padding: 1% 2.5%; 
-}
-a:link, a:visited {
+a:link, a:visited { /* Links */
     color: rgb(64, 255, 255);
 }
-a:hover, a:active {
+a:hover, a:active { /* Links */
     color: rgb(64, 255, 64);
 }
