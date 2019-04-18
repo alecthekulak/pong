@@ -4,11 +4,11 @@
 var allControls = {
     'player': 'Player-Controlled',
     'computer_follow': 'Naive Computer',
-    'computer_predict': 'Predictive Computer'
+    'computer_predict': 'Predictive Computer', 
+    'wall': '     Just a Wall     '
 }
 class Paddle {
     static width = Ball.maxSpeed; //2 * appScale;
-    static height = 28 * appScale;
     static maxSpeed = 7 * appScale * speed; //4 * appScale * speed;
     static paddleOffset = 5 * appScale; //15 * appScale; 
     static yAcceleration = 0.5 * this.maxSpeed; //2.4
@@ -19,6 +19,11 @@ class Paddle {
     }
     constructor(side = 'left', control = 'player') {
         this.control = new Iterator(allControls, control);
+        if (control == 'wall') {
+            this.height = appHeight; 
+        } else {
+            this.height = 28 * appScale; 
+        }
         if (side == 'left') {
             this.isLeft = true;
             this.x = Paddle.paddleOffset;
@@ -42,11 +47,36 @@ class Paddle {
         return this.x + Paddle.width;
     }
     top() { return this.y; }
-    bottom() { return this.y + Paddle.height; }
-    xMidpoint() { return this.x + (Paddle.width / 2); }
-    yMidpoint() { return this.y + (Paddle.height / 2); }
+    bottom() { return this.y + this.height; }
+    xMidpoint() { return this.x + (this.width / 2); }
+    yMidpoint() { return this.y + (this.height / 2); }
+    toggle() {
+        console.log(`control: ${this.control.value}`);
+        if (this.control.value == 'wall') { 
+            this.control.next(); 
+            this.height = 28 * appScale; 
+            this.reset()
+        } else {
+            this.control.next();
+            if (this.control.value == 'wall') {
+                this.height = appHeight;
+                this.y = 0; 
+            }
+        }
+        console.log(`aft control: ${this.control.value}`);
+        // this.control.next();
+        // if (this.control.value == 'wall') { 
+        //     this.height = appHeight;
+        // } else {
+        //     this.height = 28 * appScale; 
+        // }
+    }
     reset() {
-        this.y = appHeight / 2 - Paddle.height / 2;
+        if (this.control.value == 'wall') {
+            this.y = 0; 
+        } else {
+            this.y = appHeight / 2 - this.height / 2;
+        }
         if (this.isLeft) {
             this.y += 7;
         }
@@ -60,7 +90,7 @@ class Paddle {
         }
         return false;
     }
-    moveTo(yLocation, margin = Paddle.height / 4) { // height / 2 is max
+    moveTo(yLocation, margin = this.height / 4) { // height / 2 is max
         if (this.yMidpoint() > (yLocation + margin)) {
             this.ySpeed += Paddle.yAcceleration;
         } else if (this.yMidpoint() < (yLocation - margin)) {
@@ -94,7 +124,9 @@ class Paddle {
                 this.ySpeed = constrain(this.ySpeed, -Paddle.maxSpeed, 0);
             }
         } else if (this.control.value == 'computer_follow') {
-            this.moveTo(ball.y, Paddle.height / 4); //Paddle.height / 4
+            this.moveTo(ball.y, this.height / 4); //Paddle.height / 4 
+        } else if (this.control.value == 'wall') {
+            // Do nothing, it's a wall 
         } else { //this.control == 'computer_predict') {
             if (!ball.isTowards(this)) {
                 this.moveTo(appHeight / 2);
@@ -106,7 +138,7 @@ class Paddle {
         this.ySpeed = constrain(this.ySpeed, -Paddle.maxSpeed, Paddle.maxSpeed);
         this.move(); // maybe put 'move()' above the 'if' statement 
         if (this.y <= 0 || this.bottom() >= appHeight) {
-            this.y = constrain(this.y, 0, appHeight - Paddle.height);
+            this.y = constrain(this.y, 0, appHeight - this.height);
             this.ySpeed = 0;
         }
         if (this.collision(ball) && ball.alive) {
@@ -117,6 +149,6 @@ class Paddle {
         this.y -= this.ySpeed;
     }
     show() {
-        rect(this.x, this.y, Paddle.width, Paddle.height);
+        rect(this.x, this.y, Paddle.width, this.height);
     }
 }

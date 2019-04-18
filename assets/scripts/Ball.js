@@ -3,7 +3,7 @@
 class Ball { // Consider doing ball as a square, as they did on the 1972 Atari 
     static size = 5 * appScale;
     static maxSpeed = 9 * appScale * speed; //7 * appScale * speed;
-    static maxAngle = 70; //75; 
+    static maxAngle = 65; //75; 
     static refresh() {
         Ball.maxSpeed = 9 * appScale * speed;
         console.log(`new max speed: ${Ball.maxSpeed}`);
@@ -59,10 +59,22 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         }
         this.move();
     }
-    bounce(paddle) {
+    bounce(paddle) { // Redo the way that bounces happen, I don't think the angle is translating correctly 
         this.predCurrent = 0;
-        let displacement = 2 * (paddle.yMidpoint() - this.y) / Paddle.height;
-        let bounceAngle = displacement * Ball.maxAngle * Math.PI / 180;
+        let bounceAngle;
+        if (paddle.control.value == 'wall') { 
+            bounceAngle = Math.random() * 180 - 90; 
+        } else {
+            let displacement = 2 * (paddle.yMidpoint() - this.y) / paddle.height;
+            bounceAngle = displacement * 90 * Math.PI / 180; 
+        }
+        console.log(`bounceAngle (bef const): ${round(bounceAngle,2)}`);
+        if (bounceAngle < 0) {
+            bounceAngle = constrain(bounceAngle, -Ball.maxAngle, Ball.maxAngle - 90);
+        } else { 
+            bounceAngle = constrain(bounceAngle, 90 - Ball.maxAngle, Ball.maxAngle);
+        }
+        console.log(`bounceAngle (aft const): ${round(bounceAngle,2)}`);
         // console.log(`Ball displacement: ${displacement.toFixed(2)}, bounceAngle: ${(bounceAngle * 180 / Math.PI).toFixed(2)}, left paddle?: ${paddle.isLeft}`);
         if (paddle.isLeft) {
             this.xSpeed = Ball.maxSpeed * Math.cos(bounceAngle);
@@ -82,7 +94,7 @@ class Ball { // Consider doing ball as a square, as they did on the 1972 Atari
         return (Math.sign(paddle.x - this.x) == Math.sign(this.xSpeed));
     }
     predict(paddle) {
-        console.log(`making a prediction for (left: ${paddle.isLeft})`);
+        // console.log(`making a prediction for (left: ${paddle.isLeft})`);
         this.xPred = this.x;
         this.yPred = this.y;
         this.ySpeedPred = this.ySpeed;
